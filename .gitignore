@@ -1,0 +1,11 @@
+# Xcode & Swift Package Manager
+.DS_Store
+/.build/
+/Packages
+xcuserdata/
+*.xcworkspace
+!default.xcworkspace
+DerivedData/
+*.moved-aside
+*.xcuserstate
+live_diagnostic_trace.log
