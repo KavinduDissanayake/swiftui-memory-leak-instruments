@@ -18,7 +18,7 @@ Companion repository for the article:
 This repository demonstrates real-world production memory leak diagnoses and thread synchronization bug fixes:
 
 1. **The "Missing `defer`" Lock Deadlock (`SleepSurveyCoordinator`):**
-   - Shows how an unreleased `NSLock` caused by an unexpected `nil` in `UIApplication.topViewController()` during a UIKit-to-SwiftUI refactor deadlocks background sync threads.
+   - Shows how an inherited team oversight—an unreleased `NSLock` caused by an unhandled `nil` in `UIApplication.topViewController()` during an earlier UIKit-to-SwiftUI transition—deadlocked background sync threads.
    - Shows how memory ballooned to 400MB+ because downstream telemetry buffers were never deallocated.
    - Demonstrates the one-line fix: `defer { surveyPresentationLock.unlock() }`.
 

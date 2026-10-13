@@ -12,7 +12,7 @@ You know that feeling when your app runs butter-smooth on your Mac simulator, bu
 
 Yeah, I've been there. Multiple times.
 
-I faced this exact nightmare while refactoring a major **production fitness and sleep tracking application**. The app collected raw wearable sensor packets, PPG heart-rate results, and performed automated sleep survey evaluations when waking up:
+I was brought in to diagnose and resolve this exact nightmare while auditing and stabilizing a major **production fitness and sleep tracking application**. The app collected raw wearable sensor packets, PPG heart-rate results, and performed automated sleep survey evaluations when waking up:
 
 ```swift
 private func evaluateSleepSurveyTrigger(startEpochms: Int64, endEpochms: Int64)
@@ -36,7 +36,7 @@ The startup and sync logic was tightly coupled with `AppDelegate`, background pr
 
 By the end of this article, you'll have:
 
-- ✅ **The Real-World "Missing `defer`" War Story:** How an unreleased `NSLock` in `AppDelegate` caused thread deadlock and memory bloat
+- ✅ **The Real-World "Missing `defer`" War Story:** How an inherited team oversight with an unreleased `NSLock` caused thread deadlocks and memory bloat
 - ✅ **The UIKit-to-SwiftUI Transition Trap:** Why `UIApplication.topViewController()` returning `nil` triggered silent early returns
 - ✅ **How to diagnose invisible Jetsam & Watchdog crashes** that bypass Crashlytics completely
 - ✅ **Atomic pre-crash logging strategy:** Flushing logs to disk right before system termination
@@ -62,16 +62,18 @@ Before diving in, here's what this diagnostic and profiling system achieved in p
 
 This isn't just another textbook lecture on ARC and weak references. It's the real-world story of how we hunted down an elusive thread lock and memory leak in a production fitness app, and how one single keyword (`defer`) saved our architecture.
 
-The app had a legacy codebase originally written by an earlier developer. The core synchronization was tightly wired into `AppDelegate`. During a massive refactoring to modernize the architecture and transition from **UIKit to SwiftUI**, a subtle but catastrophic bug was introduced in the auto-sleep survey pipeline.
+The app had an inherited legacy codebase with multi-threaded synchronization tightly wired into `AppDelegate`. During an earlier team refactoring sprint to transition views from **UIKit to SwiftUI**, a subtle oversight in a team PR was merged into the auto-sleep survey pipeline.
 
 Here was the setup:
 1. `AppDelegate` owned a synchronization lock: `private var surveyPresentationLock = NSLock()`.
 2. When sleep processing finished, `evaluateSleepSurveyTrigger` acquired the lock: `surveyPresentationLock.lock()`.
 3. In the legacy code, `surveyPresentationLock.unlock()` was placed at the very bottom of the method.
-4. But when the app transitioned from UIKit to SwiftUI, the legacy helper `UIApplication.topViewController()` started returning `nil`!
-5. A guard check (`guard UIApplication.topViewController() != nil else { return }`) was hit, returning early **without unlocking `surveyPresentationLock`**!
+4. When a teammate added a check using `UIApplication.topViewController()` during the SwiftUI migration, it started returning `nil` in the new SwiftUI window hierarchy!
+5. The guard check (`guard UIApplication.topViewController() != nil else { return }`) was hit, exiting early **without unlocking `surveyPresentationLock`**!
 
-The moment that happened, the lock stayed locked forever. The next time sleep packets arrived on a background queue, the thread called `surveyPresentationLock.lock()` and **deadlocked indefinitely**.
+Because that lock was never released, the moment the next background sleep sync ran, the thread deadlocked indefinitely.
+
+I stepped in to conduct root cause analysis, trace the thread stalls, and permanently fix the synchronization architecture.
 
 Because that background thread was permanently stalled:
 - All captured database objects and sleep URL query parameters stayed pinned in memory.
