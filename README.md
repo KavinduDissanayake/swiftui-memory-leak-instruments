@@ -99,5 +99,5 @@ open class BaseLeakTestCase: XCTestCase {
 ## 🔗 Resources & Articles
 
 * **Medium Article:** [The Instruments Playbook That Finally Solved My SwiftUI Memory Leaks](https://medium.com/@kcrdissanayake/the-instruments-playbook-that-finally-solved-my-swiftui-memory-leaks-11bd5a88c168)
-* **Author:** Kavindu Dissanayake ([@kcrdissanayake](https://github.com/kcrdissanayake))
+* **Author:** Kavindu Dissanayake ([@KavinduDissanayake](https://github.com/KavinduDissanayake))
 * **LinkedIn:** [Kavindu Dissanayake](https://www.linkedin.com/in/kcrdissanayake/)

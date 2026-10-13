@@ -366,7 +366,7 @@ By combining disciplined use of `defer`, atomic diagnostic logging, Xcode Instru
 
 The complete test suite, pre-crash logger, leaking vs. safe view models, and the fitness sleep tracking manager with the `defer` fix are available on GitHub:
 
-👉 **[GitHub Repository: swiftui-memory-leak-instruments](https://github.com/kcrdissanayake/swiftui-memory-leak-instruments)**
+👉 **[GitHub Repository: swiftui-memory-leak-instruments](https://github.com/KavinduDissanayake/swiftui-memory-leak-instruments)**
 
 ---
 
@@ -374,6 +374,6 @@ The complete test suite, pre-crash logger, leaking vs. safe view models, and the
 
 Have you ever spent days debugging an issue only to discover a single missing `defer` or an unreleased `NSLock`? How do you catch silent background kills in your iOS apps? Share your war stories in the comments below!
 
-* **GitHub:** [@kcrdissanayake](https://github.com/kcrdissanayake)
+* **GitHub:** [@KavinduDissanayake](https://github.com/KavinduDissanayake)
 * **Medium:** [@kcrdissanayake](https://medium.com/@kcrdissanayake)
 * **LinkedIn:** [Kavindu Dissanayake](https://www.linkedin.com/in/kcrdissanayake/)
