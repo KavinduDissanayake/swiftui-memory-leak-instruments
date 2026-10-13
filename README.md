@@ -9,6 +9,8 @@ Companion repository for the article:
 **["The Instruments Playbook That Finally Solved My SwiftUI Memory Leaks"](https://medium.com/@kcrdissanayake/the-instruments-playbook-that-finally-solved-my-swiftui-memory-leaks-11bd5a88c168)**  
 *Diagnosing retain cycles, NSLock deadlocks, and missing cleanup deallocations to maintain 60fps SwiftUI rendering and optimal memory footprint in production.*
 
+![The Instruments Playbook That Finally Solved My SwiftUI Memory Leaks](article/cover.png)
+
 ---
 
 ## 📖 Overview
