@@ -2,7 +2,7 @@
 
 > *Diagnosing retain cycles, NSLock deadlocks, and missing cleanup deallocations to maintain 60fps SwiftUI rendering and optimal memory footprint in production.*
 
-![The Instruments Playbook That Finally Solved My SwiftUI Memory Leaks](cover.jpg)
+![The Instruments Playbook That Finally Solved My SwiftUI Memory Leaks](cover.png)
 
 ---
 
